@@ -6,7 +6,8 @@ import Login from './Login'
 class App extends Component {
   state = {
     isLoading: true,
-    comments: {}
+    comments: {},
+    isAuth: false
   }
 
   addComment = (newComment) => {
@@ -19,6 +20,17 @@ class App extends Component {
     this.props.database.ref().update(comments)
   }
 
+  login = async(email, password) => {
+    try{
+      await this.props.auth.signInWithEmailAndPassword(email, password)
+      this.setState({isAuth: true})
+    } catch(e) {
+      console.log(e)
+      this.setState({isAuth: false})
+    }
+    console.log(email + ' - ' + password)
+  }
+
   componentDidMount(){
     const comments = this.props.database.ref('comments')
     comments.on('value', snapshot => {
@@ -27,13 +39,22 @@ class App extends Component {
         'comments': snapshot.val()
       })
     })
+
+    this.props.auth.onAuthStateChanged( user => {
+      if( user ){
+        this.setState({ isAuth : true })
+      }
+    })
   }
 
   render() {
     return (
       <div>
-        <Login />
-        <NewComment onClick={this.addComment} />
+        {
+          this.state.isAuth 
+            ? <NewComment onClick={this.addComment} />
+            : <Login login={this.login}/>
+        }
         <Comments comments={this.state.comments} />
         {this.state.isLoading && <p>Loading...</p>}
       </div>
