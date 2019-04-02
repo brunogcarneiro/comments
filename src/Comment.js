@@ -2,7 +2,12 @@ import React from 'react'
 
 const Comment = ({comment}) => {
     return (
-        <p>{comment.comment}</p>
+        <div>
+        Comentário: {comment.comment}
+        <br />
+        Enviado por: {comment.email}
+        <hr />
+        </div>
     )
 }
 
