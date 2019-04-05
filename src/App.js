@@ -27,10 +27,15 @@ class App extends Component {
   login = async(email, password) => {
     try{
       await this.props.auth.signInWithEmailAndPassword(email, password)
-      this.setState({isAuth: true})
+      this.setState({
+        isAuth: true,
+        authErrorMessage: ''
+      })
     } catch(e) {
-      console.log(e)
-      this.setState({isAuth: false})
+      this.setState({
+        isAuth: false,
+        authErrorMessage: e.message
+      })
     }
     console.log(email + ' - ' + password)
   }
@@ -62,11 +67,9 @@ class App extends Component {
       <div>
         {
           this.state.isAuth 
-            ? (
-               [<User user={this.state.user} onLogout={this.logout}/>,
+            ? [<User user={this.state.user} onLogout={this.logout}/>,
                <NewComment onClick={this.addComment} />]
-              )
-            : <Login login={this.login}/>
+            : <Login login={this.login} authErrorMessage={this.state.authErrorMessage}/>
         }
         <Comments comments={this.state.comments} />
         {this.state.isLoading && <p>Loading...</p>}
