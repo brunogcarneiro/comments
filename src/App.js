@@ -3,13 +3,16 @@ import NewComment from './NewComment'
 import Comments from './Comments'
 import Login from './Login'
 import User from './User'
+import SignUp from './SignUp'
 
 class App extends Component {
   state = {
     isLoading: true,
     comments: {},
     isAuth: false,
-    user: undefined
+    user: undefined,
+    isSignUp: true,
+    signUpErrorMessage: ''
   }
 
   addComment = (newComment) => {
@@ -44,6 +47,25 @@ class App extends Component {
     this.props.auth.signOut()
   }
 
+  signup = async(email, password) => {
+    try{
+      await this.props.auth.createUserWithEmailAndPassword(email, password)
+      this.setState({
+        isSignUp: false,
+        signUpErrorMessage: ''
+      })
+    } catch(e) {
+      this.setState({
+        isSignUp: true,
+        signUpErrorMessage: e.message
+      })
+    }
+  }
+
+  setaTela = tela => (email, password) => {
+    this.setState({isSignUp: tela == 'signup' })
+  }
+
   componentDidMount(){
     const comments = this.props.database.ref('comments')
     comments.on('value', snapshot => {
@@ -69,7 +91,11 @@ class App extends Component {
           this.state.isAuth 
             ? [<User user={this.state.user} onLogout={this.logout}/>,
                <NewComment onClick={this.addComment} />]
-            : <Login login={this.login} authErrorMessage={this.state.authErrorMessage}/>
+            : (
+                this.state.isSignUp
+                  ? <SignUp signup={this.signup} signUpErrorMessage={this.state.signUpErrorMessage} onClick={this.setaTela('login')}/>
+                  : <Login login={this.login} authErrorMessage={this.state.authErrorMessage} onClick={this.setaTela('signup')}/>
+              )
         }
         <Comments comments={this.state.comments} />
         {this.state.isLoading && <p>Loading...</p>}

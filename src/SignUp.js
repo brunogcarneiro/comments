@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 
-class Login extends Component {
+class SignUp extends Component {
     state = {
         email: '',
         password: ''
@@ -15,13 +15,13 @@ class Login extends Component {
         return <div>
             <input type='text' onChange={this.updateState('email')} placeholder={this.state.email} />
             <input type='password' onChange={this.updateState('password')} placeholder={this.state.password} />
-            <button onClick={() => this.props.login(this.state.email, this.state.password)}>Logar</button>
-            <button onClick={this.props.onClick}>Ir para signup</button>
+            <button onClick={() => this.props.signup(this.state.email, this.state.password)}>Cadastrar</button>
+            <button onClick={() => this.props.onClick()}>Ir para login</button>
             {
-                this.props.authErrorMessage && <p>{this.props.authErrorMessage}</p>
+                this.props.signUpErrorMessage && <p>{this.props.signUpErrorMessage}</p>
             }
         </div>
     }
 }
 
-export default Login;
+export default SignUp;
