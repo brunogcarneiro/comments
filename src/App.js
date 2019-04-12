@@ -4,6 +4,7 @@ import Comments from './Comments'
 import Login from './Login'
 import User from './User'
 import SignUp from './SignUp'
+import 'bootstrap-css-only'
 
 class App extends Component {
   state = {
@@ -11,7 +12,7 @@ class App extends Component {
     comments: {},
     isAuth: false,
     user: undefined,
-    isSignUp: true,
+    isSignUp: false,
     signUpErrorMessage: ''
   }
 
@@ -86,7 +87,7 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className='container mt-3'>
         {
           this.state.isAuth 
             ? [<User user={this.state.user} onLogout={this.logout}/>,

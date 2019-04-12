@@ -12,15 +12,27 @@ class Login extends Component {
     }
 
     render(){
-        return <div>
-            <input type='text' onChange={this.updateState('email')} placeholder={this.state.email} />
-            <input type='password' onChange={this.updateState('password')} placeholder={this.state.password} />
-            <button onClick={() => this.props.login(this.state.email, this.state.password)}>Logar</button>
-            <button onClick={this.props.onClick}>Ir para signup</button>
-            {
-                this.props.authErrorMessage && <p>{this.props.authErrorMessage}</p>
-            }
-        </div>
+        return (
+            <div>
+                <h4>Entre para comentar</h4>
+                <form className='form-inline'>
+                    <input type='text' className='form-control' onChange={this.updateState('email')} placeholder={this.state.email} />
+                    <input type='password' className='form-control ml-1' onChange={this.updateState('password')} placeholder={this.state.password} />
+                    <button className='btn-primary ml-1' onClick={(e) => {
+                        e.preventDefault()
+                        this.props.login(this.state.email, this.state.password)
+                    }
+                    }>Logar</button>
+                    <button className='btn ml-1' onClick={this.props.onClick}>Ir para signup</button>
+                </form>
+                {
+                    this.props.authErrorMessage && <div className='card text-write bg-danger'>
+                        <div className='card-body'>
+                            {this.props.authErrorMessage}
+                        </div>
+                    </div>
+                }
+            </div>)
     }
 }
 

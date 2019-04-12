@@ -13,13 +13,16 @@ class SignUp extends Component {
 
     render(){
         return <div>
-            <input type='text' onChange={this.updateState('email')} placeholder={this.state.email} />
-            <input type='password' onChange={this.updateState('password')} placeholder={this.state.password} />
-            <button onClick={() => this.props.signup(this.state.email, this.state.password)}>Cadastrar</button>
-            <button onClick={() => this.props.onClick()}>Ir para login</button>
-            {
-                this.props.signUpErrorMessage && <p>{this.props.signUpErrorMessage}</p>
-            }
+            <h4>Criar conta</h4>
+            <form className='form-inline'>
+                <input className='form-control' type='text' onChange={this.updateState('email')} placeholder={this.state.email} />
+                <input className='form-control ml-1' type='password' onChange={this.updateState('password')} placeholder={this.state.password} />
+                <button className='btn-primary ml-1' onClick={() => this.props.signup(this.state.email, this.state.password)}>Cadastrar</button>
+                <button className='btn ml-1' onClick={this.props.onClick}>Ir para login</button>
+                {
+                    this.props.signUpErrorMessage && <p>{this.props.signUpErrorMessage}</p>
+                }
+            </form>
         </div>
     }
 }
